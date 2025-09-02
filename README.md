@@ -68,3 +68,23 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 ### `npm run build` fails to minify
 
 This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+
+
+# -----------------------------------------------------------
+1-Add to github 
+ 
+    1- run command  
+        git init
+    2- run command 
+        git add .
+    3- run command 
+         git commit -m "Initial commit of existing project"
+    4- git remote add origin <remote repository URL>
+        git remote add origin   https://github.com/kbyish/Store-react.git
+
+        you can get the url from website like github 
+        after you create  a new 
+    go to github and create new repository and get url of that 
+
+
+2-
