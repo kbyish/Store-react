@@ -32,13 +32,18 @@ export async function updateProduct(id, product) {
     body: JSON.stringify(product),
   });
   if (!res.ok) throw new Error('Failed to update product');
-  return res.json();
+  return res;
 }
 
 export async function deleteProduct(id) {
   const res = await fetch(`${BASE_URL}/${id}`, { method: 'DELETE' });
-  if (!res.ok) throw new Error('Failed to delete product');
-  return res.json();
+  console.log('ProductApi::res= ', res);
+  
+if(res.status === 204) alert(`product ${id}  deleted successfully`);
+else{
+  alert(`there was error deleting product ${id} `);
+}
+  return res;
 }
 
 export async function uploadCsv(file) {
