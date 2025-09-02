@@ -1,32 +1,62 @@
 import React, { useEffect, useState } from 'react';
-import { getProducts, deleteProduct } from '../../Api/ProductApi';
+import {
+  getProducts, createProduct, updateProduct, deleteProduct
+} from '../../Api/ProductApi';
 import ProductList from '../../components/Products/ProductList';
-import CsvUpload from '../../components/Products/CsvUpload';
-import { useNavigate } from 'react-router-dom';
+import ProductForm from '../../components/Products/ProductForm';
+import CsvUpload from '../../components/CsvUpload';
+import Spinner from '../../components/spinner';
 
 export default function ProductsPage() {
   const [products, setProducts] = useState([]);
-  const navigate = useNavigate();
-
-  async function loadProducts() {
-    setProducts(await getProducts());
-  }
+  const [editing, setEditing] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    loadProducts();
+    fetchProducts();
   }, []);
+
+  async function fetchProducts() {
+    setLoading(true);
+    setProducts(await getProducts());
+    setLoading(false);
+  }
+
+  async function handleCreate(product) {
+    await createProduct(product);
+    fetchProducts();
+  }
+
+  async function handleUpdate(product) {
+    await updateProduct(editing.id, product);
+    setEditing(null);
+    fetchProducts();
+  }
 
   async function handleDelete(id) {
     await deleteProduct(id);
-    loadProducts();
+    fetchProducts();
   }
 
   return (
     <div>
       <h1>Products</h1>
-      <button onClick={() => navigate('/add')}>Add Product</button>
-      <CsvUpload onUploadSuccess={loadProducts} />
-      <ProductList products={products} onEdit={id => navigate(`/edit/${id}`)} onDelete={handleDelete} />
+      <CsvUpload onUpload={fetchProducts} />
+      {loading ? <Spinner /> : (
+        <>
+          <ProductList
+            products={products}
+            onEdit={p => setEditing(p)}
+            onDelete={handleDelete}
+          />
+          <h2>{editing ? 'Edit Product' : 'Add Product'}</h2>
+          <ProductForm
+            initial={editing}
+            onSubmit={editing ? handleUpdate : handleCreate}
+            onCancel={() => setEditing(null)}
+          />
+        </>
+      )}
     </div>
   );
 }

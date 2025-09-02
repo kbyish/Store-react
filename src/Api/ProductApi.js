@@ -1,8 +1,4 @@
-// API helper functions for products
-
-//const BASE_URL = '/api/products';
-const BASE_URL = '/api/products';
-
+import { BASE_URL } from '../constants';
 export async function getProducts() {
   const res = await fetch(BASE_URL);
   if (!res.ok) throw new Error('Failed to fetch products');
@@ -46,13 +42,3 @@ else{
   return res;
 }
 
-export async function uploadCsv(file) {
-  const formData = new FormData();
-  formData.append('file', file);
-  const res = await fetch(`${BASE_URL}/UploadCsv/getCsvData`, {
-    method: 'POST',
-    body: formData,
-  });
-  if (!res.ok) throw new Error('CSV upload failed');
-  return res.json();
-}
